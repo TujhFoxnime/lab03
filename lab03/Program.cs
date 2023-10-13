@@ -10,7 +10,7 @@ namespace lab03
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Предупреждение! Обмен курсами выполняется в трёх валютах: RUB, USD, EUR.");
+            /*Console.WriteLine("Предупреждение! Обмен курсами выполняется в трёх валютах: RUB, USD, EUR.");
             Console.WriteLine("Введите тремя заглавными буквами на английском языке валюту, которая у вас в данный момент:");
             string accepted_value = Convert.ToString(Console.ReadLine());
             Console.WriteLine("Введите тремя заглавными буквами на английском языке валюту, которую хотите купить:");
@@ -35,7 +35,7 @@ namespace lab03
                 CurrencyRUB currency = new CurrencyRUB(amount_value, accepted_value);
                 double result = currency.Amount_Definition();
                 Console.WriteLine($"Осуществлён перевод валюты в RUB. Итого: {result}");
-            }
+            }*/
         }
     }
 }

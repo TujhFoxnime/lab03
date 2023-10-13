@@ -8,66 +8,74 @@ namespace lab03
 {
     public class Currency
     {
-        protected double amount_value;
-        protected string currency_value;
-        public double AmountValue
-        { get; set; }
-        public string CurrencyValue
-        { get; set; }
-        public Currency(double AmountValue, string CurrencyValue)
+        public double Value { get; set; }
+        public Currency(double value)
         {
-            this.amount_value = AmountValue;
-            this.currency_value = CurrencyValue;
+            Value = value;
         }
-
-        public virtual double Amount_Definition() { return AmountValue; }
     }
     class CurrencyUSD : Currency
     {
-        public CurrencyUSD(double amount_value, string currency_value) : base(amount_value, currency_value) { }
-        public override double Amount_Definition()
+        public double ExchangeRate { get; set; }
+        public CurrencyUSD(double value, double exchange_rate) : base(value) { ExchangeRate = exchange_rate; }
+
+        public static implicit operator CurrencyEUR(CurrencyUSD usd)
         {
-            if (currency_value == "RUB")
-            {
-                return amount_value * 0.00968992; // курс на 2 октября
-            }
-            else if (CurrencyValue == "EUR")
-            {
-                return AmountValue * 1.02326;
-            }
-            else { return AmountValue; }
+            return new CurrencyEUR(usd.Value * usd.ExchangeRate / CurrencyConverter.EURtoUSD, CurrencyConverter.EURtoUSD);
+        }
+
+        public static implicit operator CurrencyRUB(CurrencyUSD usd)
+        {
+            return new CurrencyRUB(usd.Value * usd.ExchangeRate / CurrencyConverter.RUBtoUSD, CurrencyConverter.RUBtoUSD);
         }
     }
     class CurrencyEUR : Currency
     {
-        public CurrencyEUR(double amount_value, string currency_value) : base(amount_value, currency_value) { }
-        public override double Amount_Definition()
+        public double ExchangeRate { get; set; }
+        public CurrencyEUR(double value, double exchange_rate) : base(value) { ExchangeRate = exchange_rate; }
+
+        public static implicit operator CurrencyUSD(CurrencyEUR eur)
         {
-            if (this.currency_value == "USD")
-            {
-                return this.amount_value * 0.97727;
-            }
-            else if (this.currency_value == "RUB")
-            {
-                return this.amount_value * 0.0094697;
-            }
-            else { return this.amount_value; }
+            return new CurrencyUSD(eur.Value * eur.ExchangeRate / CurrencyConverter.USDtoEUR, CurrencyConverter.USDtoEUR);
+        }
+
+        public static implicit operator CurrencyRUB(CurrencyEUR eur)
+        {
+            return new CurrencyRUB(eur.Value * eur.ExchangeRate / CurrencyConverter.RUBtoEUR, CurrencyConverter.RUBtoEUR);
         }
     }
     class CurrencyRUB : Currency
     {
-        public CurrencyRUB(double amount_value, string currency_value) : base(amount_value, currency_value) { }
-        public override double Amount_Definition()
+        public double ExchangeRate { get; set; }
+        public CurrencyRUB(double value, double exchange_rate) : base(value) { ExchangeRate = exchange_rate; }
+        
+        public static implicit operator CurrencyEUR(CurrencyRUB rub)
         {
-            if (this.currency_value == "USD")
-            {
-                return this.amount_value * 103.2;
-            }
-            else if (this.currency_value == "EUR")
-            {
-                return this.amount_value * 105.6;
-            }
-            else { return this.amount_value; }
+            return new CurrencyEUR(rub.Value * rub.ExchangeRate / CurrencyConverter.EURtoRUB, CurrencyConverter.EURtoRUB);
+        }
+
+        public static implicit operator CurrencyUSD(CurrencyRUB rub)
+        {
+            return new CurrencyUSD(rub.Value * rub.ExchangeRate / CurrencyConverter.USDtoRUB, CurrencyConverter.USDtoRUB);
+        }
+    }
+    public static class CurrencyConverter
+    {
+        public static double USDtoEUR { get; set; } = 0.85;
+        public static double EURtoUSD { get; set; } = 1.18;
+        public static double USDtoRUB { get; set; } = 74.21;
+        public static double RUBtoUSD { get; set; } = 0.013;
+        public static double EURtoRUB { get; set; } = 87.37;
+        public static double RUBtoEUR { get; set; } = 0.011;
+
+        public static void SetExchangeRates(double usdToEur, double eurToUsd, double usdToRub, double rubToUsd, double eurToRub, double rubToEur)
+        {
+            USDtoEUR = usdToEur;
+            EURtoUSD = eurToUsd;
+            USDtoRUB = usdToRub;
+            RUBtoUSD = rubToUsd;
+            EURtoRUB = eurToRub;
+            RUBtoEUR = rubToEur;
         }
     }
 }

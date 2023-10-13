@@ -35,6 +35,11 @@ namespace lab03
             return new Vector(a.X * numb, a.Y * numb, a.Z * numb);
         }
 
+        public static Vector operator *(double numb, Vector a)
+        {
+            return new Vector(a.X * numb, a.Y * numb, a.Z * numb);
+        }
+
         public static bool operator ==(Vector a, Vector b) 
         {
             return Math.Sqrt(a.X * a.X + a.Y * a.Y + a.Z * a.Z) == Math.Sqrt(b.X * b.X + b.Y * b.Y + b.Z * b.Z);
